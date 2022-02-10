@@ -1,0 +1,228 @@
+import java.sql.*;					
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class login14 extends JFrame implements ActionListener,Runnable
+{
+		Statement stmt;
+		Connection con;
+		ResultSet rs;
+	    JTextField txtu;
+	    JPasswordField txtp;
+		JButton B1,B2;
+	    JLabel l1,l2,l3,l4,l5,l6,l7,l8,l9,l10;	
+	     int c=0,x=10;
+	     Thread t;
+	     Font f1,f2;
+
+        public static void main(String[] args)
+	    {
+	       login14 lobj=new login14();
+	     }
+	    public login14()
+	   {
+		Container c=getContentPane();	
+		c.setLayout(null);
+		setIconImage (getToolkit().getImage ("im/home.gif"));
+		setLocation(240,140);
+		setSize(400,350);
+		setResizable(false);
+		setTitle("Login Screen");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		l1=new JLabel("UserName:");
+		l1.setSize(80,20);
+		l1.setLocation(50,50);
+		c.add(l1);
+
+		l2=new JLabel("PassWord:");
+		l2.setSize(80,20);
+		l2.setLocation(50,80);
+		c.add(l2);
+
+		l3=new JLabel("Created By :");
+		l3.setSize(80,20);
+		l3.setLocation(200,170);
+		c.add(l3);
+
+        f1=new Font("Monotype Corsiva",Font.ITALIC,20);
+		l4=new JLabel("Gosavi Amit B.");
+		l4.setFont(f1);
+		l4.setSize(150,30);
+		l4.setLocation(200,200);
+		c.add(l4);
+
+      	l7=new JLabel("Prof. ");
+		l7.setFont(f1);
+		l7.setSize(150,30);
+		l7.setLocation(50,200);
+		c.add(l7);
+
+	/*	l8=new JLabel("Prof. Thuse S.C");
+		l8.setFont(f1);
+		l8.setSize(190,60);
+		l8.setLocation(50,200);
+		c.add(l8);*/
+
+		l9=new JLabel("Guided By :");
+		l9.setSize(80,20);
+		l9.setLocation(50,170);
+		c.add(l9);
+
+		f2=new Font("Monotype Corsiva",Font.BOLD,30);
+		l9=new JLabel("***WEL-COME***");
+		l9.setFont(f2);
+		l9.setSize(500,30);
+		l9.setLocation(50,10);
+		c.add(l9);
+
+		l10=new JLabel("***OM SAI NURSERY***");
+		l10.setFont(f1);
+		l10.setSize(500,150);
+		l10.setLocation(50,200);
+		c.add(l10);
+
+		txtu=new JTextField();
+		txtu.setSize(80,20);
+		txtu.setLocation(140,50);
+		c.add(txtu);
+		
+		txtp=new JPasswordField();
+		txtp.setSize(80,20);
+		txtp.setLocation(140,80);
+		c.add(txtp);
+
+		Bl=new JButton("Login");
+		Bl.setSize(80,20);
+		Bl.setLocation(50,120);
+		Bl.addActionListener(this);
+		c.add(Bl);
+
+		B2=new JButton("Cancel");
+		B2.setSize(80,20);
+		B2.setLocation(140,120);
+		B2.addActionListener(this);
+		c.add(B2);
+		
+		l6=new JLabel(new ImageIcon("im/back4.gif"));
+		l6.setSize(400,350);
+		c.add(l6);
+  
+		setVisible(true);
+
+		t=new Thread(this);
+		t.start();
+	}
+	
+	public void run()
+	{
+		while(true)
+		{
+			
+			try{
+				c=c+1;
+				l9.setLocation(x,10);
+				x=x+5;
+				if(x>500)
+					x=10;
+				Thread.sleep(500);
+				switch(c)
+				{
+					case 1:l9.setForeground(Color.red);
+					             l10.setForeground(Color.magenta);
+					             break;
+					case 2:l9.setForeground(Color.cyan);
+					             l10.setForeground(Color.orange);
+					             break;
+					case 3:l9.setForeground(Color.yellow);
+            					l10.setForeground(Color.cyan);
+					             break;
+				    case 4:l9.setForeground(Color.pink);
+					             l10.setForeground(Color.red);
+					             break;
+					case 5:l9.setForeground(Color.blue);
+					 l10.setForeground(Color.yellow);
+					             break;
+					case 6:l9.setForeground(Color.orange);
+             					l10.setForeground(Color.pink);
+					             break;
+					case 7:l9.setForeground(Color.magenta);
+	             				l10.setForeground(Color.blue);
+   					            c=0;
+					             break;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+		}
+	}
+
+/*public void actionPerformed(ActionEvent ae)
+	{
+	String str=ae.getActionCommand();
+	if(str.equals("Cancel"))
+		System.exit(0);
+	else if(str.equals("Login"))
+	   {
+ 		 try
+		   {
+			 int flag=0;
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+			 con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nms?useSSL=false","root","root");
+		     stmt=con.createStatement();
+		  	 rs=stmt.executeQuery("select * from login");
+			
+			 while(rs.next())
+			   {
+				 String un=rs.getString("uname");
+				 String pw=rs.getString(2);
+				    if((un.equals(txtu.getText()))&&(pw.equals(txtp.getText())))
+					{
+					  flag=1;
+					  JOptionPane.showMessageDialog(this,"Login is Correct.Congratulations!!!");
+					  new MainFra(con);
+				      setVisible (false);		
+					  dispose();
+					  break;
+					}
+				}
+			if(flag==0)
+	  		    JOptionPane.showMessageDialog(this,"Sorry!!! Try Again.");
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		}     
+	}
+}*/
+public void actionPerformed(ActionEvent e)
+	{
+		//String s=e.getActionCommand();
+		
+		if(e.getSource()==B1)
+		{
+			if((txtu.getText().equals("143"))&&(txtp.getText().equals("nursery")))
+                                          
+	                            {
+	                            dispose();	
+	                               home h=new home();
+	                               h.setVisible(true);
+	                               	                               
+	                            }   
+	               else
+	                 {
+	         JOptionPane.showMessageDialog(null,"ENTER THE CORRECT PASSWORD AND SERVICE NO");
+	        	
+	                 }   
+	           }
+		
+		if(e.getSource()==B2)
+		{
+			System.exit(0);
+		}
+	}
+	 
